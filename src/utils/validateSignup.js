@@ -6,7 +6,7 @@ function validateSignup(req) {
   if (!firstname || !lastname) {
     throw new Error("firstName and lastName required");
   } else if (!validator.isStrongPassword(password)) {
-    throw new Error("Password must be strong");
+    throw new Error("Password must be strong and at least 8 char long");
   } else if (!validator.isEmail(email)) {
     throw new Error("Email is invalid");
   }

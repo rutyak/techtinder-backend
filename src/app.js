@@ -13,9 +13,17 @@ const app = express();
 
 const port = process.env.PORT;
 
+const corsOPtions = {
+  origin: ["http://localhost:5173"],
+  methods: ["GET", "POST", "PATCH", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
+  credentials: true,
+  optionsSuccessStatus: 200,
+};
+
+app.use(cors(corsOPtions));
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors());
 
 app.use(authRouter);
 app.use(profileRouter);

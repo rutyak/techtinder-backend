@@ -48,7 +48,7 @@ authRouter.post("/login", async (req, res) => {
     }
     const token = await user.generateAuthToken();
     res.cookie("jwtToken", token);
-    res.status(200).json({ message: "Login successfully!!" });
+    res.status(200).json({ message: "Login successfully!!", user });
   } catch (error) {
     res.status(500).json({ message: error.message || "Internal server error" });
   }
