@@ -1,5 +1,12 @@
 const validateProfileEdit = (req) => {
-  const allowedItems = ["firstname", "lastname", "age", "skills", "gender"];
+  const allowedItems = [
+    "firstname",
+    "lastname",
+    "age",
+    "skills",
+    "gender",
+    "imageurl",
+  ];
 
   const items = Object.keys(req.body);
   const isValidUpdate = items.every((item) => allowedItems.includes(item));

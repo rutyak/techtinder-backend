@@ -23,6 +23,10 @@ const userSchema = new mongoose.Schema({
       "Last name can only contain letters, hyphens and apostrophes",
     ],
   },
+  imageurl: {
+    type: String,
+    default: "https://www.w3schools.com/howto/img_avatar.png",
+  },
   email: {
     type: String,
     required: [true, "Email required"],
@@ -41,6 +45,7 @@ const userSchema = new mongoose.Schema({
     type: Number,
     min: 18,
     max: 60,
+    default: 0,
   },
   gender: {
     type: String,
@@ -49,6 +54,7 @@ const userSchema = new mongoose.Schema({
       values: ["male", "female", "others"],
       message: "Gender must be either male, female, or others",
     },
+    default: "-",
   },
   password: {
     type: String,
@@ -75,6 +81,7 @@ const userSchema = new mongoose.Schema({
       },
       message: "Skills should not be greater than 10",
     },
+    default: [],
   },
 });
 
