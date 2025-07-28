@@ -8,7 +8,6 @@ const authRouter = express.Router();
 require("dotenv").config();
 
 authRouter.post("/signup", async (req, res) => {
-  console.log("SIfgn up is hittting...");
   try {
     //validation
     validateSignup(req);

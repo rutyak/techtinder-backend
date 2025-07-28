@@ -8,13 +8,10 @@ const requestRouter = express.Router();
 
 requestRouter.post("/request/send/:status/:id", userAuth, async (req, res) => {
   try {
-    console.log("request sending hitt...");
 
     const fromUserId = req.user._id;
     const toUserId = req.params.id;
     const status = req.params.status;
-
-    console.log("fromUserId, toUserId, status", fromUserId, toUserId, status);
 
     const isValidUserId = await User.findById(toUserId);
     if (!isValidUserId) {
