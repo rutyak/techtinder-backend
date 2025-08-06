@@ -6,6 +6,7 @@ const validateProfileEdit = (req) => {
     "skills",
     "gender",
     "imageurl",
+    "job"
   ];
 
   const items = Object.keys(req.body);

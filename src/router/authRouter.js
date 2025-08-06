@@ -8,9 +8,11 @@ const authRouter = express.Router();
 require("dotenv").config();
 
 authRouter.post("/signup", async (req, res) => {
+  console.log("signup hit...");
   try {
     //validation
-    validateSignup(req);
+    // validateSignup(req);
+    console.log("signup req.body: ", req.body);
 
     const { password, email } = req.body;
     const user = await User.findOne({ email });
@@ -29,6 +31,7 @@ authRouter.post("/signup", async (req, res) => {
 });
 
 authRouter.post("/login", async (req, res) => {
+  console.log("login hit...");
   try {
     const { email, password } = req.body;
 
@@ -36,7 +39,7 @@ authRouter.post("/login", async (req, res) => {
       return res.status(400).json({ message: "Email and password required" });
     }
 
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email }).select("+password");
     if (!user) {
       return res.status(400).json({ message: "Invalid credentials" });
     }

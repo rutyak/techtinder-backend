@@ -45,7 +45,7 @@ const userSchema = new mongoose.Schema({
     type: Number,
     min: 18,
     max: 60,
-    default: 0,
+    default: 22,
   },
   gender: {
     type: String,
@@ -54,11 +54,16 @@ const userSchema = new mongoose.Schema({
       values: ["male", "female", "others"],
       message: "Gender must be either male, female, or others",
     },
-    default: "-",
+    default: "male",
+  },
+  job: {
+    type: String,
+    default: "MERN Stack Developer"
   },
   password: {
     type: String,
     required: true,
+    select: false,
     validate: {
       validator: function (value) {
         return validator.isStrongPassword(value, {

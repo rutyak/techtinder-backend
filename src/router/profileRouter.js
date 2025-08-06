@@ -9,7 +9,7 @@ profileRouter.post(
   "/upload/image",
   userAuth,
   upload.single("profileImage"),
-  (req, res) => {
+  async (req, res) => {
     console.log("image upload hit");
     try {
       if (!req.file) {
@@ -18,9 +18,15 @@ profileRouter.post(
 
       const imageurl = req.file.filename;
 
+      const updatedUser = await User.findByIdAndUpdate(
+        req.user.id,
+        { imageurl: imageurl },
+        { new: true }
+      );
+
       res
         .status(200)
-        .json({ message: "Image uploaded successfully", imageurl });
+        .json({ message: "Image uploaded successfully", updatedUser });
     } catch (error) {
       res
         .status(500)
