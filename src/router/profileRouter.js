@@ -11,26 +11,30 @@ profileRouter.post(
   upload.single("profileImage"),
   async (req, res) => {
     console.log("image upload hit");
+
     try {
       if (!req.file) {
         return res.status(400).json({ message: "No file uploaded" });
       }
 
-      const imageurl = req.file.filename;
+      const imageurl = req.file.path;
 
       const updatedUser = await User.findByIdAndUpdate(
         req.user.id,
-        { imageurl: imageurl },
+        { imageurl },
         { new: true }
       );
 
-      res
-        .status(200)
-        .json({ message: "Image uploaded successfully", updatedUser });
+      return res.status(200).json({
+        message: "Image uploaded successfully",
+        imageurl: updatedUser.imageurl,
+      });
     } catch (error) {
-      res
-        .status(500)
-        .json({ message: "Internal server error", error: error.message });
+      console.error("Upload Error:", error);
+      return res.status(500).json({
+        message: "Internal server error",
+        error: error.message,
+      });
     }
   }
 );

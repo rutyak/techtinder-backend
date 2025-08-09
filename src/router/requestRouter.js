@@ -7,8 +7,9 @@ const { default: mongoose } = require("mongoose");
 const requestRouter = express.Router();
 
 requestRouter.post("/request/send/:status/:id", userAuth, async (req, res) => {
-  try {
+  console.log("request hit: ");
 
+  try {
     const fromUserId = req.user._id;
     const toUserId = req.params.id;
     const status = req.params.status;
@@ -24,7 +25,7 @@ requestRouter.post("/request/send/:status/:id", userAuth, async (req, res) => {
         .json({ message: "Cannot send a request to yourself" });
     }
 
-    const allowedStatus = ["interested", "ignored"];
+    const allowedStatus = ["interested", "ignored", "superinterested"];
     if (!allowedStatus.includes(status)) {
       return res.status(400).json({ message: "Invalid status" });
     }
@@ -46,7 +47,7 @@ requestRouter.post("/request/send/:status/:id", userAuth, async (req, res) => {
     });
 
     res.status(201).json({
-      message: `${req.user.firstname} ${status} connection request to ${isValidUserId.firstname} successfully`,
+      message: "Request sent successfully",
       connectionReq,
     });
   } catch (error) {
@@ -60,6 +61,8 @@ requestRouter.post(
   "/request/review/:status/:requestId",
   userAuth,
   async (req, res) => {
+    console.log("accept reject hit");
+
     try {
       const loggedInUser_id = req.user._id;
       const { status, requestId } = req.params;
@@ -89,7 +92,7 @@ requestRouter.post(
       await connection.save();
 
       res.status(200).json({
-        message: "Connection request accepted successfully",
+        message: `${status} successfully!`,
         connection,
       });
     } catch (error) {
