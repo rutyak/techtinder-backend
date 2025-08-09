@@ -8,9 +8,19 @@ const profileRouter = express.Router();
 profileRouter.post(
   "/upload/image",
   userAuth,
-  upload.single("profileImage"),
+  (req, res, next) => {
+    upload.single("profileImage")(req, res, (err) => {
+      if (err) {
+        console.error("Multer/Cloudinary Error:", err);
+        return res.status(400).json({
+          message: "Image upload failed",
+          error: err.message || err,
+        });
+      }
+      next();
+    });
+  },
   async (req, res) => {
-    console.log("image upload hit");
 
     try {
       if (!req.file) {

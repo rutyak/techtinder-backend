@@ -10,7 +10,6 @@ const USER_SAFE_DATA = "firstname lastname age gender skills job imageurl";
 userRouter.get("/user/request/received", userAuth, async (req, res) => {
   try {
     const loggedInUser_id = req.user._id;
-    console.log("loggedInUser_id: ", loggedInUser_id);
 
     const requests = await ConnectionRequest.find({
       toUserId: loggedInUser_id,
@@ -37,8 +36,6 @@ userRouter.get("/user/connections", userAuth, async (req, res) => {
     })
       .populate("fromUserId", USER_SAFE_DATA)
       .populate("toUserId", USER_SAFE_DATA);
-
-    console.log("connections: ", connections);
 
     let data = connections.map((data) => {
       if (data.fromUserId._id.equals(loggedInUser_id)) {

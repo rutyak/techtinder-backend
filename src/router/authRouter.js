@@ -8,12 +8,9 @@ const authRouter = express.Router();
 require("dotenv").config();
 
 authRouter.post("/signup", async (req, res) => {
-  console.log("signup hit...");
   try {
     //validation
     // validateSignup(req);
-    console.log("signup req.body: ", req.body);
-
     const { password, email } = req.body;
     const user = await User.findOne({ email });
     if (user) {
@@ -31,7 +28,6 @@ authRouter.post("/signup", async (req, res) => {
 });
 
 authRouter.post("/login", async (req, res) => {
-  console.log("login hit...");
   try {
     const { email, password } = req.body;
 

@@ -7,7 +7,6 @@ const { default: mongoose } = require("mongoose");
 const requestRouter = express.Router();
 
 requestRouter.post("/request/send/:status/:id", userAuth, async (req, res) => {
-  console.log("request hit: ");
 
   try {
     const fromUserId = req.user._id;
@@ -61,7 +60,6 @@ requestRouter.post(
   "/request/review/:status/:requestId",
   userAuth,
   async (req, res) => {
-    console.log("accept reject hit");
 
     try {
       const loggedInUser_id = req.user._id;
