@@ -57,25 +57,47 @@ authRouter.post("/logout", (req, res) => {
   res.status(200).json({ message: "Logout successfully" });
 });
 
-authRouter.patch("/forgot/password", userAuth, async (req, res) => {
+authRouter.post("/forgot-password", async (req, res) => {
   try {
-    //validation
-    validateForgetPassword(req);
+    const { email } = req.body;
 
-    const { oldPassword, newPassword } = req.body;
+    if (!email) {
+      return res.status(400).json({ message: "Please add email address" });
+    }
 
-    const user = req.user;
+    const user = await User.find({ email });
 
-    const isValidPassword = await user.passwordCompare(oldPassword);
-    if (!isValidPassword) {
-      return res.status(400).json({ message: "Old password is incorrect" });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json({ message: "Email verified successfully" });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Internal server error", error: error.message });
+    console.error(error);
+  }
+});
+
+authRouter.patch("/reset-password", async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+      return res.status(400).json({ message: "Password required" });
+    }
+
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
     }
 
     //hashPass
-    const passwordHash = await user.hashPassword(newPassword);
+    const passwordHash = await user.hashPassword(password);
 
-    await User.findByIdAndUpdate(
-      user._id,
+    await User.updateOne(
+      { email },
       { password: passwordHash },
       { new: true, runValidators: true }
     );

@@ -7,7 +7,7 @@ const ConnectionRequest = require("../model/connectionRequest");
 
 const USER_SAFE_DATA = "firstname lastname age gender skills job imageurl";
 
-userRouter.get("/user/request/received", userAuth, async (req, res) => {
+userRouter.get("/user/requests", userAuth, async (req, res) => {
   try {
     const loggedInUser_id = req.user._id;
 
