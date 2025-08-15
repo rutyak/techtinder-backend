@@ -15,8 +15,7 @@ app.use("/uploads", express.static("uploads"));
 const port = process.env.PORT;
 
 const corsOPtions = {
-  origin: ["http://localhost:5173", "http://51.20.8.16"],
-
+  origin: ["http://localhost:5173", "http://51.20.8.16/8000"],
   methods: ["GET", "POST", "PATCH", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
   credentials: true,
