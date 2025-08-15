@@ -8,6 +8,7 @@ const cookieParser = require("cookie-parser");
 const authRouter = require("./router/authRouter");
 const profileRouter = require("./router/profileRouter");
 const requestRouter = require("./router/requestRouter");
+const paymentRouter = require("./router/paymentRouter");
 
 const app = express();
 app.use("/uploads", express.static("uploads"));
@@ -30,6 +31,7 @@ app.use(authRouter);
 app.use(profileRouter);
 app.use(requestRouter);
 app.use(userRouter);
+app.use(paymentRouter);
 
 connectDB()
   .then(() => {
