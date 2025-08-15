@@ -10,12 +10,13 @@ const profileRouter = require("./router/profileRouter");
 const requestRouter = require("./router/requestRouter");
 
 const app = express();
-app.use("/uploads", express.static("uploads"))
+app.use("/uploads", express.static("uploads"));
 
 const port = process.env.PORT;
 
 const corsOPtions = {
-  origin: ["http://localhost:5173"],
+  origin: ["http://localhost:5173", "http://51.20.8.16"],
+
   methods: ["GET", "POST", "PATCH", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
   credentials: true,
@@ -30,7 +31,6 @@ app.use(authRouter);
 app.use(profileRouter);
 app.use(requestRouter);
 app.use(userRouter);
-
 
 connectDB()
   .then(() => {
