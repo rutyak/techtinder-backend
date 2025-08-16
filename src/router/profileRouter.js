@@ -1,7 +1,7 @@
 const express = require("express");
 const userAuth = require("../middleware/userAuth");
 const validateProfileEdit = require("../utils/validateProfileEdit");
-const User = require("../model/userSchema");
+const User = require("../model/user");
 const upload = require("../storage/multer");
 const profileRouter = express.Router();
 

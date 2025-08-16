@@ -1,5 +1,5 @@
 const express = require("express");
-const User = require("../model/userSchema");
+const User = require("../model/user");
 const validateSignup = require("../utils/validateSignup");
 const bcrypt = require("bcrypt");
 const userAuth = require("../middleware/userAuth");
@@ -42,7 +42,7 @@ authRouter.post("/login", async (req, res) => {
 
     const isValidPassword = await user.passwordCompare(password);
     if (!isValidPassword) {
-      res.status(400).json({ message: "Invalid password" });
+      return res.status(400).json({ message: "Invalid password" });
     }
     const token = await user.generateAuthToken();
     res.cookie("jwtToken", token);

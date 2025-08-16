@@ -2,7 +2,7 @@ const express = require("express");
 const { findById } = require("../model/connectionRequest");
 const ConnectionRequest = require("../model/connectionRequest");
 const userAuth = require("../middleware/userAuth");
-const User = require("../model/userSchema");
+const User = require("../model/user");
 const { default: mongoose } = require("mongoose");
 const requestRouter = express.Router();
 

@@ -58,7 +58,13 @@ const userSchema = new mongoose.Schema({
   },
   job: {
     type: String,
-    default: "MERN Stack Developer"
+    default: "MERN Stack Developer",
+  },
+  isPremium: {
+    type: String,
+  },
+  membershipType: {
+    type: String,
   },
   password: {
     type: String,
