@@ -7,17 +7,13 @@ const membershipAmount = require("../utils/constants");
 const {
   validateWebhookSignature,
 } = require("razorpay/dist/utils/razorpay-utils");
+const User = require("../model/user");
 require("dotenv").config();
 
 paymentRouter.post("/payment/create", userAuth, async (req, res) => {
-  console.log("create payment hit");
   try {
     const { membershipType } = req.body;
     const { firstname, lastname, email } = req.user;
-
-    console.log("membershipType: ", membershipType);
-    console.log("object in backend: ", membershipAmount);
-    console.log("amount in backend: ", membershipAmount[membershipType] * 100);
 
     const order = await instance.orders.create({
       amount: membershipAmount[membershipType] * 100,
@@ -59,8 +55,10 @@ paymentRouter.post("/payment/create", userAuth, async (req, res) => {
 });
 
 paymentRouter.post("/payment/webhook", async (req, res) => {
+  console.log("Webhook called");
+
   try {
-    const webhookSignature = req.get("x-razorpay-signature");
+    const webhookSignature = req.get("X-Razorpay-Signature");
 
     const isWebhookValid = validateWebhookSignature(
       JSON.stringify(req.body),
@@ -89,8 +87,9 @@ paymentRouter.post("/payment/webhook", async (req, res) => {
       await user.save();
     }
 
-    res.status(200).json({ message: "Payment successfull" });
+    return res.status(200).json({ message: "Payment successful" });
   } catch (error) {
+    console.error("Webhook error:", error);
     res
       .status(500)
       .json({ message: "Internal server error", error: error.message });
