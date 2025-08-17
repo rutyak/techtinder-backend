@@ -1,5 +1,5 @@
 const membershipAmount = {
-  silver: 99,
+  basic: 99,
   gold: 399,
   platinum: 599,
 };

@@ -16,10 +16,7 @@ app.use("/uploads", express.static("uploads"));
 const port = process.env.PORT;
 
 const corsOPtions = {
-  origin:
-    process.env.NODE_ENV === "production"
-      ? ["https://techtinder.netlify.app"]
-      : ["http://localhost:5173"],
+  origin: ["http://localhost:5173", "https://techtinder.netlify.app"],
   methods: ["GET", "POST", "PATCH", "DELETE", "OPTIONS"],
   allowedHeaders: [
     "Content-Type",

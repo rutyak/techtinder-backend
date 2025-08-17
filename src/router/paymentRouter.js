@@ -27,7 +27,7 @@ paymentRouter.post("/payment/create", userAuth, async (req, res) => {
         firstname,
         lastname,
         email,
-        membershipType,
+        membershipType: membershipType.toLowerCase(),
       },
     });
 
