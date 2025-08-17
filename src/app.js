@@ -26,6 +26,7 @@ const corsOPtions = {
     "Accept",
     "x-rtb-fingerprint-id",
   ],
+  exposedHeaders: ["x-rtb-fingerprint-id"],
   credentials: true,
   optionsSuccessStatus: 200,
 };
