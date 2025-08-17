@@ -46,11 +46,7 @@ authRouter.post("/login", async (req, res) => {
     }
     const token = await user.generateAuthToken();
 
-    res.cookie("jwtToken", token, {
-      secure: process.env.NODE_ENV === "production",
-      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-      maxAge: 7 * 24 * 60 * 60 * 1000,
-    });
+    res.cookie("jwtToken", token);
 
     res.status(200).json({ message: "Login successfully!!", user });
   } catch (error) {
