@@ -61,7 +61,7 @@ const userSchema = new mongoose.Schema({
     default: "MERN Stack Developer",
   },
   isPremium: {
-    type: String,
+    type: Boolean,
   },
   membershipType: {
     type: String,
