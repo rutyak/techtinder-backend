@@ -47,6 +47,7 @@ authRouter.post("/login", async (req, res) => {
     const token = await user.generateAuthToken();
 
     res.cookie("jwtToken", token, {
+      httpOnly: false,
       secure: process.env.NODE_ENV === "production",
       sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
     });
