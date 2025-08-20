@@ -2,6 +2,8 @@ const express = require("express");
 const connectDB = require("./database");
 const userRouter = require("./router/userRouter");
 const cors = require("cors");
+const initializeSocket = require("./utils/socket");
+const http = require("http");
 
 const cookieParser = require("cookie-parser");
 
@@ -11,11 +13,15 @@ const requestRouter = require("./router/requestRouter");
 const paymentRouter = require("./router/paymentRouter");
 
 const app = express();
+const server = http.createServer(app);
+
+initializeSocket(server);
+
 app.use("/uploads", express.static("uploads"));
 
 const port = process.env.PORT;
 
-const corsOPtions = {
+const corsOptions = {
   origin: ["http://localhost:5173", "https://techtinder.netlify.app"],
   methods: ["GET", "POST", "PATCH", "DELETE", "OPTIONS"],
   allowedHeaders: [
@@ -31,7 +37,7 @@ const corsOPtions = {
   optionsSuccessStatus: 200,
 };
 
-app.use(cors(corsOPtions));
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser());
 
@@ -45,7 +51,7 @@ connectDB()
   .then(() => {
     console.log("Data base connection established !!");
 
-    app.listen(port, () => {
+    server.listen(port, () => {
       console.log(`listening on port http://localhost:${port}`);
     });
   })
