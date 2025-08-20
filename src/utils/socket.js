@@ -2,6 +2,7 @@ const { Server } = require("socket.io");
 const crypto = require("crypto");
 const cookie = require("cookie");
 const jwt = require("jsonwebtoken");
+const Chat = require("../model/chat");
 
 function getSecretRoomId(userId, targetUserId) {
   return crypto
@@ -30,7 +31,7 @@ const initializeSocket = (server) => {
       }
 
       const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
-      socket.user = decoded; 
+      socket.user = decoded;
       next();
     } catch (error) {
       console.error("Socket auth error:", error.message);
@@ -45,13 +46,36 @@ const initializeSocket = (server) => {
       socket.join(roomId);
     });
 
-    socket.on("sendMessage", ({ firstname, targetUserId, text }) => {
-      const roomId = getSecretRoomId(socket.user.id, targetUserId);
-      io.to(roomId).emit("messageReceive", {
-        firstname: socket.user.firstname,
-        text,
-        senderId: socket.user.id,
-      });
+    socket.on("sendMessage", async ({ firstname, targetUserId, text }) => {
+      try {
+        const roomId = getSecretRoomId(socket.user.id, targetUserId);
+
+        let chat = await Chat.findOne({
+          paticipants: { $all: [socket.user.id, targetUserId] },
+        });
+
+        if (!chat) {
+          chat = new Chat({
+            paticipants: [socket.user.id, targetUserId],
+            messages: [],
+          });
+        }
+
+        chat.messages.push({
+          senderId: socket.user.id,
+          text,
+        });
+
+        await chat.save();
+
+        io.to(roomId).emit("messageReceive", {
+          firstname: socket.user.firstname,
+          text,
+          senderId: socket.user.id,
+        });
+      } catch (error) {
+        console.error(error.message);
+      }
     });
 
     socket.on("disconnect", () => {});
