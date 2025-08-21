@@ -11,10 +11,10 @@ const authRouter = require("./router/authRouter");
 const profileRouter = require("./router/profileRouter");
 const requestRouter = require("./router/requestRouter");
 const paymentRouter = require("./router/paymentRouter");
+const chatRouter = require("./router/chatRouter");
 
 const app = express();
 const server = http.createServer(app);
-
 initializeSocket(server);
 
 app.use("/uploads", express.static("uploads"));
@@ -46,6 +46,7 @@ app.use(profileRouter);
 app.use(requestRouter);
 app.use(userRouter);
 app.use(paymentRouter);
+app.use(chatRouter);
 
 connectDB()
   .then(() => {

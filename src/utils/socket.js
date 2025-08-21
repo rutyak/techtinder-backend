@@ -3,6 +3,7 @@ const crypto = require("crypto");
 const cookie = require("cookie");
 const jwt = require("jsonwebtoken");
 const Chat = require("../model/chat");
+const User = require("../model/user");
 
 function getSecretRoomId(userId, targetUserId) {
   return crypto
@@ -39,9 +40,18 @@ const initializeSocket = (server) => {
     }
   });
 
-  io.on("connection", (socket) => {
-    // handle events
-    socket.on("joinChat", ({ targetUserId, firstname }) => {
+  let onlineUsers = new Map();
+
+  io.on("connection", async (socket) => {
+    //make user online
+    onlineUsers.set(socket.user.id, socket.id);
+
+    socket.on("checkOnline", (targetUserId, callback) => {
+      const isOnline = onlineUsers.has(targetUserId);
+      callback(isOnline);
+    });
+
+    socket.on("joinChat", async ({ targetUserId, firstname }) => {
       const roomId = getSecretRoomId(socket.user.id, targetUserId);
       socket.join(roomId);
     });
@@ -78,7 +88,9 @@ const initializeSocket = (server) => {
       }
     });
 
-    socket.on("disconnect", () => {});
+    socket.on("disconnect", async () => {
+      onlineUsers.delete(socket.user.id);
+    });
   });
 };
 

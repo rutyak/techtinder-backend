@@ -63,6 +63,9 @@ const userSchema = new mongoose.Schema({
   isPremium: {
     type: Boolean,
   },
+  isOnline: {
+    type: Boolean,
+  },
   membershipType: {
     type: String,
   },
