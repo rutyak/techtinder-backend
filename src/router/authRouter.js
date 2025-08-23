@@ -1,16 +1,13 @@
 const express = require("express");
 const User = require("../model/user");
 const validateSignup = require("../utils/validateSignup");
-const bcrypt = require("bcrypt");
-const userAuth = require("../middleware/userAuth");
-const validateForgetPassword = require("../utils/validateForgetPassword");
 const authRouter = express.Router();
 require("dotenv").config();
 
 authRouter.post("/signup", async (req, res) => {
   try {
     //validation
-    // validateSignup(req);
+    validateSignup(req);
     const { password, email } = req.body;
     const user = await User.findOne({ email });
     if (user) {
